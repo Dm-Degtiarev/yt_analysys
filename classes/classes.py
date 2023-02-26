@@ -5,7 +5,8 @@ from googleapiclient.discovery import build
 
 class Channel:
     api_key: str = os.getenv('YT_API_KEY')
-    def __init__(self, channel_id: str, api_key: str=api_key) -> None:
+
+    def __init__(self, channel_id: str, api_key: str = api_key) -> None:
         """
         Инициализация: ввод id канала,
         токен (По умолчанию берется переменнная среды YT_API_KEY)
@@ -18,14 +19,28 @@ class Channel:
         self.channel_name = self.channel['items'][0]['snippet']['title']
         self.channel_info = self.channel['items'][0]['snippet']['description']
         self.channel_url = f'https://www.youtube.com/channel/{self._channel_id}'
-        self.subscriber_cnt = self.channel['items'][0]['statistics']['subscriberCount']
+        self.subscriber_cnt = int(self.channel['items'][0]['statistics']['subscriberCount'])
         self.videos_cnt = self.channel['items'][0]['statistics']['videoCount']
         self.views_cnt = self.channel['items'][0]['statistics']['viewCount']
+
+    def __str__(self):
+        """Возвращает значение в форамате 'Youtube-канал: channel_name' """
+        return f"Youtube-канал: {self.channel_name}"
+
+    def __add__(self, other):
+        """При сложении экземпляров класса возвращает сумму подписчиков каналов"""
+        return self.subscriber_cnt + other.subscriber_cnt
+
+    def __lt__(self, other):
+        """При сравнении экземпляров класса (> или <) возвращает True или False"""
+        return self.subscriber_cnt < other.subscriber_cnt
+
+    # def __gt__(self, other):
+    #     return  self.subscriber_cnt > other.subscriber_cnt
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале"""
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))
-
 
     @property
     def channel_id(self) -> str:
@@ -36,7 +51,6 @@ class Channel:
     def get_service():
         """возвращает объект для работы с API ютуба"""
         return build('youtube', 'v3', developerKey=Channel.api_key)
-
 
     def to_json(self):
         """Сохраняет атрибуты объекта класса в JSON"""
@@ -55,4 +69,3 @@ class Channel:
                 },
                 indent=4, ensure_ascii=False)
             )
-
