@@ -35,9 +35,6 @@ class Channel:
         """При сравнении экземпляров класса (> или <) возвращает True или False"""
         return self.subscriber_cnt < other.subscriber_cnt
 
-    # def __gt__(self, other):
-    #     return  self.subscriber_cnt > other.subscriber_cnt
-
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале"""
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))

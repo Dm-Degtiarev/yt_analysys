@@ -1,4 +1,4 @@
-from classes.classes import Channel
+from classes.channel import Channel
 
 
 def test_str():
