@@ -1,9 +1,18 @@
+from googleapiclient.discovery import build
+from abc import ABC, abstractmethod
 import json
 import os
-from googleapiclient.discovery import build
 
 
-class Channel:
+class YouTube(ABC):
+    """Абстрактный класс"""
+    @abstractmethod
+    def print_info(self):
+        """Выводит информацию о канле/виде/плейлисте в зависимости от класса"""
+        pass
+
+
+class Channel(YouTube):
     api_key: str = os.getenv('YT_API_KEY')
 
     def __init__(self, channel_id: str, api_key: str = api_key) -> None:
