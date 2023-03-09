@@ -1,7 +1,7 @@
+import json
 from classes.video import Video
 from classes.channel import YouTube
 from googleapiclient.discovery import build
-import json
 
 
 class PLVideo(Video, YouTube):
