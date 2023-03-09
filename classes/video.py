@@ -1,6 +1,6 @@
+import json
 from classes.channel import Channel, YouTube
 from googleapiclient.discovery import build
-import json
 
 
 class Video(Channel, YouTube):
