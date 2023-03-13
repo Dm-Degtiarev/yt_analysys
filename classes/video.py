@@ -7,13 +7,16 @@ class Video(Channel, YouTube):
     def __init__(self, video_id) -> None:
         """Инициализация: ввод id видео"""
         youtube = build('youtube', 'v3', developerKey=super().api_key)
-        self.video = youtube.videos().list(id=video_id, part='snippet,statistics,contentDetails').execute()
 
-        # Инициализвция атрибутов из JSON
-        self.video_id = video_id
-        self.video_name = self.video['items'][0]['snippet']['title']
-        self.like_cnt = int(self.video['items'][0]['statistics']['likeCount'])
-        self.view_cnt = int(self.video['items'][0]['statistics']['viewCount'])
+        try:
+            self.video = youtube.videos().list(id=video_id, part='snippet,statistics,contentDetails').execute()
+            self.video_id = video_id
+            self.video_name = self.video['items'][0]['snippet']['title']
+            self.like_cnt = int(self.video['items'][0]['statistics']['likeCount'])
+            self.view_cnt = int(self.video['items'][0]['statistics']['viewCount'])
+        except IndexError:
+            self.video = self.video_name = self.like_cnt = self.view_cnt = None
+            self.video_id = video_id
 
     def __str__(self):
         """При принте экземпляра возвращает значение в форамате 'video_name' """
@@ -22,3 +25,4 @@ class Video(Channel, YouTube):
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале"""
         print(json.dumps(self.video, indent=2, ensure_ascii=False))
+
